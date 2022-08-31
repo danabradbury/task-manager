@@ -1,5 +1,5 @@
 service: task-manager
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -7,8 +7,14 @@ provider:
 
 functions:
   hello:
-    handler: handler.hello
+    handler: hello.handler
     events:
       - httpApi:
           path: /
+          method: get
+  getTask:
+    handler: get-task.handler
+    events:
+      - httpApi:
+          path: /task
           method: get
