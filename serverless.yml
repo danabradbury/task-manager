@@ -18,9 +18,9 @@ functions:
       - httpApi:
           path: /task
           method: get
-putTask:
+  putTask:
     handler: put-task.handler
     events:
       - httpApi:
-          path: /task
+          path: /
           method: put
