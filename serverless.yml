@@ -24,3 +24,15 @@ functions:
       - httpApi:
           path: /
           method: put
+  postTask:
+    handler: post-task.handler
+    events:
+      - httpApi:
+          path: /
+          method: post
+  deleteTask:
+    handler: delete-task.handler
+    events:
+      - httpApi:
+          path: /
+          method: delete
