@@ -4,7 +4,17 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs14.x
-
+  environment:
+    DYNAMODB_TASK_TABLE: ${self:service}-taskTable-${sls:stage}
+iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:Get*"
+            - "dynamodb:Scan*"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:DeleteItem"
+        Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-taskTable-${sls:stage}
 functions:
   hello:
     handler: hello.handler
@@ -36,3 +46,16 @@ functions:
       - httpApi:
           path: /
           method: delete
+resources:
+  Resources:
+    CustomerTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: primary_key
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: primary_key
+            KeyType: HASH
+        TableName: ${self:service}-taskTable-${sls:stage}

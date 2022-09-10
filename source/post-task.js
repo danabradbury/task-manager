@@ -1,22 +1,20 @@
 "use strict";
 
-const handler = async (event) => {
-  
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: "post-maloned",
-      },
-      null,
-      2
-    ),
-  };
+const AWS = require('aws-sdk')
 
-  // return
-  return response;
-};
+module.exports.createTask = async (event) => {
+  const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
+  const dynamoDb = new AWS.DynamoDB.DocumentClient()
+  const putParams = {
+    TableName: process.env.DYNAMODB_TASK_TABLE,
+    Item: {
+      primary_key: body.name,
+      email: body.email
+    }
+  }
+  await dynamoDb.put(putParams).promise()
 
-module.exports = {
-  handler,
-};
+  return {
+    statusCode: 201
+  }
+}
