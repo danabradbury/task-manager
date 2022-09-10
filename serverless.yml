@@ -5,16 +5,17 @@ provider:
   name: aws
   runtime: nodejs14.x
   environment:
-    DYNAMODB_TASK_TABLE: ${self:service}-taskTable-${sls:stage}
-iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-            - "dynamodb:PutItem"
-            - "dynamodb:Get*"
-            - "dynamodb:Scan*"
-            - "dynamodb:UpdateItem"
-            - "dynamodb:DeleteItem"
-        Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-taskTable-${sls:stage}
+    DYNAMODB_TASK_TABLE: ${self:service}-table-${sls:stage}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+        - "dynamodb:Get*"
+        - "dynamodb:Query"
+        - "dynamodb:Scan*"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
 functions:
   hello:
     handler: hello.handler
@@ -23,7 +24,7 @@ functions:
           path: /
           method: get
   getTask:
-    handler: get-task.handler
+    handler: source/get-task.handler
     events:
       - httpApi:
           path: /task
@@ -35,10 +36,10 @@ functions:
           path: /
           method: put
   postTask:
-    handler: post-task.handler
+    handler: source/post-task.handler
     events:
       - httpApi:
-          path: /
+          path: /task
           method: post
   deleteTask:
     handler: delete-task.handler
@@ -48,14 +49,21 @@ functions:
           method: delete
 resources:
   Resources:
-    CustomerTable:
+    TaskTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
           - AttributeName: primary_key
             AttributeType: S
+          - AttributeName: sort_key
+            AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
           - AttributeName: primary_key
             KeyType: HASH
-        TableName: ${self:service}-taskTable-${sls:stage}
+          - AttributeName: sort_key
+            KeyType: RANGE
+        TableName: ${self:service}-table-${sls:stage}
+
+plugins:
+  - serverless-offline

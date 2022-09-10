@@ -18,10 +18,11 @@
   "homepage": "https://github.com/danabradbury/task-manager#readme",
   "devDependencies": {
     "jest": "^29.0.1",
-    "serverless": "^3.22.0"
+    "prettier": "^2.7.1",
+    "serverless": "^3.22.0",
+    "serverless-offline": "^10.0.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.1213.0",
-    "serverless-offline": "^10.0.0"
+    "aws-sdk": "^2.1213.0"
   }
 }

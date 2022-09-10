@@ -1,20 +1,29 @@
-"use strict";
+const AWS = require("aws-sdk");
 
-const AWS = require('aws-sdk')
+module.exports.handler = async (event) => {
+  const body = JSON.parse(event.body);
 
-module.exports.createTask = async (event) => {
-  const body = JSON.parse(Buffer.from(event.body, 'base64').toString())
-  const dynamoDb = new AWS.DynamoDB.DocumentClient()
+  console.log(body);
+  const dynamoDb = new AWS.DynamoDB.DocumentClient({ region: "us-east-1" });
+  const now = new Date();
+  console.log(now.toISOString());
+  const pk = `dummy hard coded PK ${now.toISOString()}`;
   const putParams = {
     TableName: process.env.DYNAMODB_TASK_TABLE,
     Item: {
-      primary_key: body.name,
-      email: body.email
-    }
+      primary_key: pk,
+      sort_key: `dummy hard coded SK`,
+    },
+  };
+
+  console.log(JSON.stringify(putParams));
+  try {
+    await dynamoDb.put(putParams).promise();
+  } catch (error) {
+    console.error(error);
   }
-  await dynamoDb.put(putParams).promise()
 
   return {
-    statusCode: 201
-  }
-}
+    statusCode: 201,
+  };
+};
