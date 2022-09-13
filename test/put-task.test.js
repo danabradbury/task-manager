@@ -1,6 +1,13 @@
-const putTask = require('../source/put-task');
+const putTask = require("../source/put-task");
 
-test('testing puts', () => {
-    const resp = putTask.handler({});
-    expect(resp).not.toBeNull();
-  });
+const testEvent = {
+  requestContext: {
+    authorizer: {},
+  },
+  body: '{ "someAttribute" : "some value" }',
+};
+
+test("testing puts", async () => {
+  const resp = await putTask.handler(testEvent);
+  expect(resp).not.toBeNull();
+});
