@@ -17,12 +17,6 @@ provider:
         - "dynamodb:DeleteItem"
       Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
 functions:
-  hello:
-    handler: source/hello.handler
-    events:
-      - httpApi:
-          path: /
-          method: get
   getTask:
     handler: source/get-task.handler
     events:

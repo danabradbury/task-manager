@@ -24,5 +24,14 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1213.0"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["./source/**"],
+    "coverageThreshold": {
+      "global": {
+        "lines": 90
+      }
+    }
   }
 }
