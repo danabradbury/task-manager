@@ -2,9 +2,9 @@ node_modules
 jspm_packages
 
 # Serverless directories
-#.serverless
+.serverless
 
 .vscode/setttings.json
 test-output
-#coverage
+coverage
 
