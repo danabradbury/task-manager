@@ -1,16 +1,12 @@
 "use strict";
 
 const handler = async (event) => {
-  // go tot he database and get some shit
-
-  // format the shit
-
-  // build the response object
+  
   const response = {
     statusCode: 200,
     body: JSON.stringify(
       {
-        message: "Get got!",
+        message: "deleted",
       },
       null,
       2

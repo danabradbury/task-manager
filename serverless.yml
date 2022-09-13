@@ -4,23 +4,60 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: nodejs14.x
-
+  environment:
+    DYNAMODB_TASK_TABLE: ${self:service}-table-${sls:stage}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:PutItem"
+        - "dynamodb:Get*"
+        - "dynamodb:Query"
+        - "dynamodb:Scan*"
+        - "dynamodb:UpdateItem"
+        - "dynamodb:DeleteItem"
+      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
 functions:
-  hello:
-    handler: hello.handler
-    events:
-      - httpApi:
-          path: /
-          method: get
   getTask:
-    handler: get-task.handler
+    handler: source/get-task.handler
     events:
       - httpApi:
           path: /task
           method: get
   putTask:
-    handler: put-task.handler
+    handler: source/put-task.handler
     events:
       - httpApi:
           path: /
           method: put
+  postTask:
+    handler: source/post-task.handler
+    events:
+      - httpApi:
+          path: /task
+          method: post
+  deleteTask:
+    handler: source/delete-task.handler
+    events:
+      - httpApi:
+          path: /
+          method: delete
+resources:
+  Resources:
+    TaskTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: primary_key
+            AttributeType: S
+          - AttributeName: sort_key
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: primary_key
+            KeyType: HASH
+          - AttributeName: sort_key
+            KeyType: RANGE
+        TableName: ${self:service}-table-${sls:stage}
+
+plugins:
+  - serverless-offline
