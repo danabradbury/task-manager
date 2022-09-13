@@ -18,7 +18,7 @@ provider:
       Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
 functions:
   hello:
-    handler: hello.handler
+    handler: source/hello.handler
     events:
       - httpApi:
           path: /
@@ -30,7 +30,7 @@ functions:
           path: /task
           method: get
   putTask:
-    handler: put-task.handler
+    handler: source/put-task.handler
     events:
       - httpApi:
           path: /
@@ -42,7 +42,7 @@ functions:
           path: /task
           method: post
   deleteTask:
-    handler: delete-task.handler
+    handler: source/delete-task.handler
     events:
       - httpApi:
           path: /
