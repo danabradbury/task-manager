@@ -1,6 +1,13 @@
-const getTask = require('../source/get-task');
+const getTask = require("../source/get-task");
 
-test('testing get', () => {
-    const resp = getTask.handler({});
-    expect(resp).not.toBeNull();
-  });
+const testEvent = {
+  requestContext: {
+    authorizer: {},
+  },
+  body: '{ "someAttribute" : "some value" }',
+};
+
+test("testing get", async () => {
+  const resp = await getTask.handler(testEvent);
+  expect(resp).not.toBeNull();
+});
