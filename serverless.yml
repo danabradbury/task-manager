@@ -60,4 +60,5 @@ resources:
         TableName: ${self:service}-table-${sls:stage}
 
 plugins:
+  - serverless-auto-swagger
   - serverless-offline
