@@ -1,6 +1,9 @@
 const AWS = require("aws-sdk");
 
 module.exports.handler = async (event) => {
+  const response = { statusCode: 401 };
+
+  // validate the request
   const body = JSON.parse(event.body);
 
   console.log(body);
@@ -18,12 +21,17 @@ module.exports.handler = async (event) => {
 
   console.log(JSON.stringify(putParams));
   try {
+    // this request is valid, now do something with it.
+    throw new Error("bad shit");
     await dynamoDb.put(putParams).promise();
+
+    // it was a valid request, I did something with it, and everything worked as expected
+    response.statusCode = 200;
   } catch (error) {
+    response.statusCode = 500;
+    response.body = JSON.stringify(error);
     console.error(error);
   }
 
-  return {
-    statusCode: 201,
-  };
+  return response;
 };

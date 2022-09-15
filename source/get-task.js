@@ -4,6 +4,7 @@ const handler = async (event) => {
   // go tot he database and get some shit
 
   // format the shit
+  throw new Error("bad shit");
 
   // build the response object
   const response = {
