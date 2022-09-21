@@ -29,8 +29,13 @@ module.exports.handler = async (event) => {
     response.statusCode = 200;
   } catch (error) {
     response.statusCode = 500;
-    response.body = JSON.stringify(error);
-    console.error(error);
+    //console.log(error.message);
+    //console.log(error);
+    //response.body = JSON.stringify(error);
+    //console.log(error);
+
+    const body = { message: "we made a mistake, come back later"};
+    response.body = JSON.stringify(body);
   }
 
   return response;
