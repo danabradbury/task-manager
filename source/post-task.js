@@ -9,14 +9,12 @@ module.exports.handler = async (event) => {
 
     // this request is valid, now do something with it.
     const dynamoDb = new AWS.DynamoDB.DocumentClient({ region: "us-east-1" });
-    const now = new Date();
-    console.log(now.toISOString());
-    const pk = `dummy hard coded PK ${now.toISOString()}`;
+    const pk = Date.now();
     const putParams = {
       TableName: process.env.DYNAMODB_TASK_TABLE,
       Item: {
-        primary_key: pk,
-        sort_key: `dummy hard coded SK`,
+        primary_key: `${pk}`,
+        sort_key: `primary`,
       },
     };
 
