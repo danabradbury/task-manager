@@ -23,12 +23,6 @@ functions:
       - httpApi:
           path: /task/{id}
           method: get
-  swaggerTask:
-    handler: swagger/swagger-json.handler
-    events:
-      - httpApi:
-          path: /swagger
-          method: get
   putTask:
     handler: source/put-task.handler
     events:
@@ -47,6 +41,12 @@ functions:
       - httpApi:
           path: /task
           method: delete
+  swagger:
+    handler: swagger/swagger-json.handler
+    events:
+      - httpApi:
+          path: /swagger
+          method: get
 resources:
   Resources:
     TaskTable:
