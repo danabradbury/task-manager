@@ -41,12 +41,6 @@ functions:
       - httpApi:
           path: /task
           method: delete
-  swagger:
-    handler: swagger/swagger-json.handler
-    events:
-      - httpApi:
-          path: /swagger
-          method: get
 resources:
   Resources:
     TaskTable:
