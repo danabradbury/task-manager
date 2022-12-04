@@ -15,9 +15,9 @@ const getTaskFromDynamo = async taskId => {
 
 const handler = async (event) => {
   let response = commonFunctions.defaultResponse();
-
+  console.log(event);
   try {
-    const taskId = commonFuncitons.getIdParam(event);
+    const taskId = commonFunctions.getIdParam(event);
 
     if (taskId) {
       const results = await getTaskFromDynamo(taskId);

@@ -6,7 +6,7 @@ const handler = async (event) => {
   let response = commonFunctions.defaultResponse();
 
   try {
-    const taskId = commonFuncitons.getIdParam(event);
+    const taskId = commonFunctions.getIdParam(event);
 
     if (taskId) {
       // validate the request

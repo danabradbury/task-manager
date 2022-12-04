@@ -18,7 +18,7 @@ const handler = async (event) => {
   let response = commonFunctions.defaultResponse();
 
   try {
-    const taskId = commonFuncitons.getIdParam(event);
+    const taskId = commonFunctions.getIdParam(event);
 
     if (taskId) {
       const results = await deleteTaskFromDynamo(taskId);

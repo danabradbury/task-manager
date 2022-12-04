@@ -23,24 +23,28 @@ functions:
       - httpApi:
           path: /task/{id}
           method: get
+          cors: true
   putTask:
     handler: source/put-task.handler
     events:
       - httpApi:
           path: /task/{id}
           method: put
+          cors: true
   postTask:
     handler: source/post-task.handler
     events:
       - httpApi:
           path: /task
           method: post
+          cors: true
   deleteTask:
     handler: source/delete-task.handler
     events:
       - httpApi:
           path: /task
           method: delete
+          cors: true
 resources:
   Resources:
     TaskTable:

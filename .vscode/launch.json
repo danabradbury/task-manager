@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug",
+            "name": "Debug serverless offline",
             "outputCapture": "std",
             "program": "${workspaceFolder}/node_modules/serverless/bin/serverless",
             "args": [
@@ -23,9 +23,13 @@
                 "SLS_API_KEY": "benk-apikey",
                 "SLS_DEBUG": "*",
                 "ENVIRONMENT": "dev",
-                "REGION": "us-east-2",
+                "REGION": "us-east-1",
                 "IS_OFFLINE": "true"
             }
+        },
+        { 
+            "type": "node",
+            "name": "someBugus config"
         }
     ]
 }
