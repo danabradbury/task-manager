@@ -1,9 +1,12 @@
 const validateRequest = (event) => {
-    return event.pathParameters && event.pathParameters.id && !isNaN(event.pathParameters.id);
+
+    return (event.pathParameters && event.pathParameters.id) ? true : false;
 }
 
 const getIdParam = (event) => {
-    return validateRequest(event) ? event.pathParameters.id : null;
+    const validRequest = validateRequest(event);
+    console.log('valid request, get the id from the path');
+    return validRequest ? event.pathParameters.id : null;
 }
 
 const defaultResponse = () => {
@@ -19,13 +22,13 @@ const handleBadRequest = response => {
     response = {
         statusCode: 400,
         body: JSON.stringify({
-          message: "ID must be an integer",
+          message: "ID must be an UUID",
         }),
       };
 }
 
 const handleNotFound = response => {
-    response = {
+    return {
         statusCode: 404,
         body: JSON.stringify({
           message: "ID was not found in our records",

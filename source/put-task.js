@@ -13,7 +13,7 @@ const handler = async (event) => {
       const body = JSON.parse(event.body);
       console.log(body);
 
-      const results = await putTaskFromDynamo(body);
+      const results = await putTaskInDynamo(taskId, body);
 
       if (results) {
         // inspect the result from dynamo, if found, build the response with a 200
@@ -21,7 +21,7 @@ const handler = async (event) => {
           statusCode: 200
         };
       } else {
-        commonFunctions.handleNotFound(response);
+        response = commonFunctions.handleNotFound(response);
       }
     } else {
       commonFunctions.handleBadRequest(response);

@@ -6,8 +6,8 @@ const deleteTaskFromDynamo = async taskId => {
   const params = {
     TableName: process.env.DYNAMODB_TASK_TABLE,
     Key: {
-      primary_key: taskId,
-      sort_key: `primary`,
+      id: taskId,
+      sk: `primary`,
     },
   };
   return dynamoDb.delete(params).promise();
@@ -33,7 +33,7 @@ const handler = async (event) => {
         commonFunctions.handleNotFound(response);
       }
     } else {
-      commonFunctions.handleBadRequest(response);
+      response = commonFunctions.handleNotFound(response);
     }
   } catch (error) {
     commonFunctions.handleError(error, response);

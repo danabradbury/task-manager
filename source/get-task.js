@@ -1,13 +1,13 @@
 const AWS = require("aws-sdk");
 const commonFunctions = require('./handler-functions');
 
-const getTaskFromDynamo = async taskId => {
+const getTaskFromDynamo = async id => {
   const dynamoDb = new AWS.DynamoDB.DocumentClient({ region: "us-east-1" });
   const params = {
     TableName: process.env.DYNAMODB_TASK_TABLE,
     Key: {
-      primary_key: taskId,
-      sort_key: `primary`,
+      id,
+      sk: `primary`,
     },
   };
   return dynamoDb.get(params).promise();
@@ -22,14 +22,21 @@ const handler = async (event) => {
     if (taskId) {
       const results = await getTaskFromDynamo(taskId);
 
-      if (results) {
+      if (results.Item) {
         // inspect the result from dynamo, if found, build the response with a 200
+        const body = {
+          message : "Task GET succesful",
+          status: "success",
+          task: results.Item.task
+        };
+
         response = {
           statusCode: 200,
-          body: JSON.stringify(results),
+          body: JSON.stringify(body)
         };
+
       } else {
-        commonFunctions.handleNotFound(response);
+        response = commonFunctions.handleNotFound(response);
       }
     } else {
       commonFunctions.handleBadRequest(response);

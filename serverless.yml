@@ -16,6 +16,8 @@ provider:
         - "dynamodb:UpdateItem"
         - "dynamodb:DeleteItem"
       Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
+  httpApi:
+    cors: true
 functions:
   getTask:
     handler: source/get-task.handler
@@ -23,43 +25,39 @@ functions:
       - httpApi:
           path: /task/{id}
           method: get
-          cors: true
   putTask:
     handler: source/put-task.handler
     events:
       - httpApi:
           path: /task/{id}
           method: put
-          cors: true
   postTask:
     handler: source/post-task.handler
     events:
       - httpApi:
           path: /task
           method: post
-          cors: true
   deleteTask:
     handler: source/delete-task.handler
     events:
       - httpApi:
-          path: /task
+          path: /task/{id}
           method: delete
-          cors: true
 resources:
   Resources:
     TaskTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: primary_key
+          - AttributeName: id
             AttributeType: S
-          - AttributeName: sort_key
+          - AttributeName: sk
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: primary_key
+          - AttributeName: id
             KeyType: HASH
-          - AttributeName: sort_key
+          - AttributeName: sk
             KeyType: RANGE
         TableName: ${self:service}-table-${sls:stage}
 
