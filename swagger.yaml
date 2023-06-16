@@ -1,0 +1,70 @@
+---
+swagger: '2.0'
+info:
+  title: task-manager
+  version: '1'
+paths:
+  "/task/{id}":
+    get:
+      summary: getTask
+      description: ''
+      operationId: getTask.get./task/{id}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 200 response
+    put:
+      summary: putTask
+      description: ''
+      operationId: putTask.put./task/{id}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 200 response
+    delete:
+      summary: deleteTask
+      description: ''
+      operationId: deleteTask.delete./task/{id}
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: 200 response
+  "/task":
+    post:
+      summary: postTask
+      description: ''
+      operationId: postTask.post./task
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        '200':
+          description: 200 response
+definitions: {}
+securityDefinitions: {}

@@ -54,6 +54,30 @@
             "description": "200 response"
           }
         }
+      },
+      "delete": {
+        "summary": "deleteTask",
+        "description": "",
+        "operationId": "deleteTask.delete./task/{id}",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response"
+          }
+        }
       }
     },
     "/task": {
@@ -61,23 +85,6 @@
         "summary": "postTask",
         "description": "",
         "operationId": "postTask.post./task",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "200 response"
-          }
-        }
-      },
-      "delete": {
-        "summary": "deleteTask",
-        "description": "",
-        "operationId": "deleteTask.delete./task",
         "consumes": [
           "application/json"
         ],
