@@ -1,21 +1,22 @@
 service: task-manager
-frameworkVersion: "3"
-
+frameworkVersion: '3'        
 provider:
-  name: aws
-  runtime: nodejs14.x
-  environment:
-    DYNAMODB_TASK_TABLE: ${self:service}-table-${sls:stage}
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "dynamodb:PutItem"
-        - "dynamodb:Get*"
-        - "dynamodb:Query"
-        - "dynamodb:Scan*"
-        - "dynamodb:UpdateItem"
-        - "dynamodb:DeleteItem"
-      Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
+    name: aws
+    runtime: nodejs14.x
+    environment:
+        DYNAMODB_TASK_TABLE: ${self:service}-table-${sls:stage}
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - 'dynamodb:PutItem'
+              - 'dynamodb:Get*'
+              - 'dynamodb:Query'
+              - 'dynamodb:Scan*'
+              - 'dynamodb:UpdateItem'
+              - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:${aws:region}:${aws:accountId}:table/${self:service}-table-${sls:stage}
+    httpApi:
+        cors: true
 functions:
   getTask:
     handler: source/get-task.handler
@@ -39,7 +40,7 @@ functions:
     handler: source/delete-task.handler
     events:
       - httpApi:
-          path: /task
+          path: /task/{id}
           method: delete
 resources:
   Resources:
@@ -47,18 +48,65 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: primary_key
+          - AttributeName: id
             AttributeType: S
-          - AttributeName: sort_key
+          - AttributeName: sk
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: primary_key
+          - AttributeName: id
             KeyType: HASH
-          - AttributeName: sort_key
+          - AttributeName: sk
             KeyType: RANGE
         TableName: ${self:service}-table-${sls:stage}
 
+custom:
+    documentation:
+      version: '1'
+      title: 'My API'
+      description: 'This is my API'
+      models: 
+          - name: getResponse
+            description: GET response model
+            contentType: json
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              properties:
+                Object:
+                  type: Integer
+                  
+          - name: putResponse
+            description: PUT response model
+            contentType: json
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              properties:
+                Object:
+                  type: Integer
+                Object2:
+                  type: string
+
+          - name: postResponse
+            description: POST response model
+            contentType: json
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              properties:
+                Object:
+                  type: Integer
+                Object2:
+                  type: string
+            
+          - name: deleteResponse
+            description: DELETE response model
+            contentType: json
+            schema:
+              $schema: http://json-schema.org/draft-04/schema#
+              properties:
+                Object:
+                  type: Integer
+            
 plugins:
-  - serverless-auto-swagger
-  - serverless-offline
+    - serverless-auto-swagger
+    - serverless-offline
+    - serverless-openapi-documentation
